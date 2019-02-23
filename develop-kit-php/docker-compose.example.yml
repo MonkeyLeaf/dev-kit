@@ -1,0 +1,108 @@
+version: '2'
+
+services:
+    www:
+        container_name: www
+        image: nimmis/alpine:latest
+        volumes:
+            # mount code folder in linux
+            - ~/public_html:/var/www/html
+            # mount code folder in windows
+            # - F:\public_html:/var/www/html
+    nginx:
+        container_name: nginx
+        image: nginx
+        ports:
+            - "80:80"
+        links:
+            # - "php56:php"
+            - "php71:php"
+        volumes:
+            # Custom vhost
+            - ./config/nginx/conf.d:/etc/nginx/conf.d
+            # nginx log
+            - ./log/nginx:/var/log/nginx
+        volumes_from:
+            - www
+        command: [nginx-debug, '-g', 'daemon off;']
+
+    php71:
+        container_name: php71
+        build: ./image/php/7.1
+        volumes:
+            - ./config/php/7.1/conf.d/custom.ini:/usr/local/etc/php/conf.d/custom.ini
+            - ./log/php/7.1:/var/log/php
+        volumes_from:
+            - www
+        links:
+            - redis
+            - mysql
+            # - dockerhost
+
+    # php56:
+    #     container_name: php56
+    #     build: ./image/php/5.6
+    #     volumes:
+    #         - ./config/php/5.6/conf.d/custom.ini:/usr/local/etc/php/conf.d/custom.ini
+    #         - ./config/php/5.6/php-fpm.d/custom.ini:/usr/local/etc/php-fpm.d/custom.ini
+    #         - ./log/php/5.6:/var/log/php
+    #     volumes_from:
+    #         - www
+    #     links:
+    #         - redis
+    #         - mysql
+    #         # - dockerhost
+    #         # - rabbit1
+    #     external_links:
+    #         - nginx:gamota-sdk.local
+    #     # restart: always
+
+    redis:
+        container_name: redis
+        image: redis:alpine
+        command: ["redis-server", "--appendonly", "yes"]
+        volumes:
+            - ./data/redis:/data
+            - ./config/redis/redis.conf:/usr/local/etc/redis/redis.conf
+
+    mysql:
+        container_name: mysql
+        image: leafney/docker-alpine-mysql
+        volumes:
+            - ./data/mysql:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PWD: 'root'
+        ports:
+            - "3306:3306"
+
+    # phpmyadmin:
+    #     container_name: phpmyadmin
+    #     image: phpmyadmin/phpmyadmin
+    #     links:
+    #         - mysql:db
+    #     ports:
+    #         - "8081:80"
+
+    # dockerhost:
+    #     container_name: dockerhost
+    #     restart: on-failure
+    #     image: qoomon/docker-host
+    #     cap_add: [ 'NET_ADMIN', 'NET_RAW' ]
+    #     mem_limit: 4M
+    # rabbit1:
+    #     image: "rabbitmq:3-management"
+    #     hostname: "rabbit1"
+    #     environment:
+    #         RABBITMQ_ERLANG_COOKIE: "SWQOKODSQALRPCLNMEQG"
+    #         RABBITMQ_DEFAULT_USER: "rabbitmq"
+    #         RABBITMQ_DEFAULT_PASS: "rabbitmq"
+    #         RABBITMQ_DEFAULT_VHOST: "/"
+    #     ports:
+    #         - "15672:15672"
+    #         - "5672:5672"
+    #     labels:
+    #         NAME: "rabbitmq1"
+    #     volumes:
+    #         - "./config/rabbitmq/enabled_plugins:/etc/rabbitmq/enabled_plugins"
+    #         #- "./config/rabbitmq/rabbitmq.config:/etc/rabbitmq/rabbitmq.config:ro"
+    #         #- "./config/rabbitmq/autocluster-0.4.1.ez:/usr/lib/rabbitmq/lib/rabbitmq_server-3.5.5/plugins/autocluster-0.4.1.ez"
