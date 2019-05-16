@@ -8,3 +8,5 @@
 out
 gen
 /develop-kit-php/log/
+/develop-kit-php/.env
+/develop-kit-common/.env
