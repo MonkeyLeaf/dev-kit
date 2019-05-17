@@ -14,7 +14,7 @@ services:
             - "./log/nginx:/var/log/nginx"
             - "~/www:/var/www/html"
         networks:
-            - develop_kit_common
+            - develop-kit_common
         restart: always
     php-fpm:
         container_name: php-fpm
@@ -26,8 +26,8 @@ services:
             # - ./log/php/7.1:/var/log/php
             - "~/www:/var/www/html"
         networks:
-            - develop_kit_common
+            - develop-kit_common
         restart: always
 networks:
-    develop_kit_common:
+    develop-kit_common:
         external: true
