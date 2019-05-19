@@ -11,8 +11,8 @@ services:
         volumes:
             - ./config/nginx/conf.d:/etc/nginx/conf.d
             - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
-            - "./log/nginx:/var/log/nginx"
-            - "~/www:/var/www/html"
+            - ./logs/nginx:/var/log/nginx
+            - ~/www:/var/www/html
         networks:
             - develop-kit_common
         restart: always
@@ -23,8 +23,8 @@ services:
             - "9000:9000"
         volumes:
             - ./config/php/php.ini:/usr/local/etc/php/php.ini
-            # - ./log/php/7.1:/var/log/php
-            - "~/www:/var/www/html"
+            - ./logs/php:/var/log/php
+            - ~/www:/var/www/html
         networks:
             - develop-kit_common
         restart: always

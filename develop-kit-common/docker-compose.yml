@@ -1,20 +1,6 @@
 version: '3'
 
 services:
-    postgres:
-        container_name: postgres
-        image: postgres:latest
-        volumes:
-            - ./config/postgresql/postgresql.conf:/etc/postgresql.conf
-            - ./data/postgresql/data:/var/lib/postgresql/data
-        ports:
-            - "5432:5432"
-        command: postgres -c config_file=/etc/postgresql.conf
-        environment:
-            POSTGRES_PASSWORD: '123456'
-        networks:
-            - common
-        restart: always
     mongo:
         container_name: mongo
         image: mongo:latest
