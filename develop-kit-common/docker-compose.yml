@@ -1,10 +1,29 @@
 version: '3'
 
 services:
+    postgresql:
+        container_name: postgresql
+        image: postgres:latest
+        volumes:
+            - ./config/postgresql/postgresql.conf:/etc/postgresql.conf
+            #  You need to create data/postgresql/pgdata folder manually or this will error
+            - ./data/postgresql/pgdata:/var/lib/postgresql/data
+            - /etc/passwd:/etc/passwd:ro
+            - ./logs/postgresql:/postgres_log
+        user: "${UID_GID}"
+        command: postgres -c config_file=/etc/postgresql.conf
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_PASSWORD: '123456'
+        networks:
+            - common
+        restart: always
     mongo:
         container_name: mongo
         image: mongo:latest
         volumes:
+#            - ./config/mongo/mongod.conf:/etc/mongod.conf
             - ./data/mongo:/data/db
             - ./logs/mongo:/var/log/mongodb
         user: "${UID_GID}"
@@ -19,7 +38,6 @@ services:
         command: ["redis-server", "--appendonly", "yes"]
         volumes:
             - ./data/redis:/data
-            - ./logs/redis:/var/log/redis
         user: "${UID_GID}"
         ports:
             - "6379:6379"
