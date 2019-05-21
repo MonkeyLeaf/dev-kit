@@ -6,10 +6,14 @@ services:
         image: postgres:latest
         volumes:
             - ./config/postgresql/postgresql.conf:/etc/postgresql.conf
-            - ./data/postgresql/data:/var/lib/postgresql/data
+            #  You need to create data/postgresql/pgdata folder manually or this will error
+            - ./data/postgresql/pgdata:/var/lib/postgresql/data
+            - /etc/passwd:/etc/passwd:ro
+            - ./logs/postgresql:/postgres_log
+        user: "${UID_GID}"
+        command: postgres -c config_file=/etc/postgresql.conf
         ports:
             - "5432:5432"
-        command: postgres -c config_file=/etc/postgresql.conf
         environment:
             POSTGRES_PASSWORD: '123456'
         networks:
