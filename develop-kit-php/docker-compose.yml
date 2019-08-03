@@ -15,7 +15,7 @@ services:
             - ~/www:/var/www/html
         networks:
             - develop-kit_common
-        restart: always
+        #restart: always
     php-fpm:
         container_name: php-fpm
         build: ./image/php/7.1-fpm
@@ -27,7 +27,7 @@ services:
             - ~/www:/var/www/html
         networks:
             - develop-kit_common
-        restart: always
+        #restart: always
 networks:
     develop-kit_common:
         external: true
