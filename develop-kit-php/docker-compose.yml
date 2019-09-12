@@ -14,8 +14,11 @@ services:
             - ./logs/nginx:/var/log/nginx
             - ~/www:/var/www/html
         networks:
-            - develop-kit_common
+            develop-kit_common:
+                aliases:
+                    - mp-core.example.com
         restart: always
+
     php-fpm:
         container_name: php-fpm
         build: ./image/php/7.1-fpm
@@ -31,3 +34,4 @@ services:
 networks:
     develop-kit_common:
         external: true
+        
