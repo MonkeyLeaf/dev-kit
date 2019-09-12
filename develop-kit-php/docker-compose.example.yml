@@ -19,7 +19,6 @@ services:
                     # add more virtual host
                     - domain.com
         restart: always
-
     php-fpm:
         container_name: php-fpm
         build: ./image/php/7.1-fpm
@@ -31,6 +30,8 @@ services:
             - ~/www:/var/www/html
         networks:
             - develop-kit_common
+        extra_hosts:
+            - "domain.com:127.0.0.1"
         restart: always
 networks:
     develop-kit_common:
