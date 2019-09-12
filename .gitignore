@@ -7,3 +7,5 @@
 *.iml
 out
 gen
+develop-kit-common/docker-compose.yml
+develop-kit-php/docker-compose.yml
