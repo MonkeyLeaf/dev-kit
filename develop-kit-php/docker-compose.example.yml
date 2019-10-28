@@ -21,7 +21,7 @@ services:
         restart: always
     php-fpm:
         container_name: php-fpm
-        build: ./image/php/7.1-fpm
+        build: ./image/php/7.2-fpm
         ports:
             - "9000:9000"
         volumes:
