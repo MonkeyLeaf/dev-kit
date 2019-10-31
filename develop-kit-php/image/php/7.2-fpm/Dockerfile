@@ -48,7 +48,7 @@ RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-di
     && docker-php-ext-install gd
 
 # optional: install nodejs and npm in php-fpm image
-RUN curl -sL https://deb.nodesource.com/setup_12.x -o nodesource_setup.sh
-RUN bash nodesource_setup.sh
-RUN apt-get install -y nodejs
-RUN rm nodesource_setup.sh
+#RUN curl -sL https://deb.nodesource.com/setup_12.x -o nodesource_setup.sh
+#RUN bash nodesource_setup.sh
+#RUN apt-get install -y nodejs
+#RUN rm nodesource_setup.sh
