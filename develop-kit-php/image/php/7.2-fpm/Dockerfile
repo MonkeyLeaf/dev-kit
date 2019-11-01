@@ -47,6 +47,8 @@ RUN docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
 RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
     && docker-php-ext-install gd
 
+RUN pecl install mongodb
+
 # optional: install nodejs and npm in php-fpm image
 #RUN curl -sL https://deb.nodesource.com/setup_12.x -o nodesource_setup.sh
 #RUN bash nodesource_setup.sh
