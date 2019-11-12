@@ -8,4 +8,6 @@
 out
 gen
 develop-kit-common/docker-compose.yml
+develop-kit-common/.env
 develop-kit-php/docker-compose.yml
+develop-kit-php/.env
