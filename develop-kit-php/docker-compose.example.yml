@@ -14,7 +14,7 @@ services:
             - ./logs/nginx:/var/log/nginx
             - ~/www:/var/www/html
         networks:
-            develop-kit_common:
+            databases_common:
                 aliases:
                     # add more virtual host
                     - domain.com
@@ -29,10 +29,10 @@ services:
             - ./logs/php:/var/log/php
             - ~/www:/var/www/html
         networks:
-            - develop-kit_common
+            - databases_common
         extra_hosts:
             - "domain.com:127.0.0.1"
         restart: always
 networks:
-    develop-kit_common:
+    databases_common:
         external: true
