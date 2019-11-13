@@ -22,6 +22,7 @@ services:
     php-fpm:
         container_name: php-fpm
         build: ./image/php/7.2-fpm
+        image: php-fpm:7.2
         ports:
             - "9000:9000"
         volumes:
