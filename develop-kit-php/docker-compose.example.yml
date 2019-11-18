@@ -18,7 +18,7 @@ services:
                 aliases:
                     # add more virtual host
                     - domain.com
-        restart: always
+        # restart: always
     php-fpm:
         container_name: php-fpm
         build: ./image/php/7.2-fpm
@@ -33,7 +33,7 @@ services:
             - databases_common
         extra_hosts:
             - "domain.com:127.0.0.1"
-        restart: always
+        # restart: always
 networks:
     databases_common:
         external: true
