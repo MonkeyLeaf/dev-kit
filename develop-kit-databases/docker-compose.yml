@@ -1,0 +1,62 @@
+version: '3'
+
+services:
+    postgresql:
+        container_name: postgresql
+        image: postgres:alpine
+        volumes:
+            - ./config/postgresql/postgresql.conf:/etc/postgresql.conf
+            #  You need to create data/postgresql/pgdata folder manually or this will error
+            - ./data/postgresql/pgdata:/var/lib/postgresql/data
+            - /etc/passwd:/etc/passwd:ro
+            - ./logs/postgresql:/postgres_log
+        user: "${UID_GID}"
+        command: postgres -c config_file=/etc/postgresql.conf
+        ports:
+            - "5432:5432"
+        environment:
+            POSTGRES_PASSWORD: '123456'
+        networks:
+            - common
+        restart: always
+    mongo:
+        container_name: mongo
+        image: mongo:latest
+        volumes:
+#            - ./config/mongo/mongod.conf:/etc/mongod.conf
+            - ./data/mongo:/data/db
+            - ./logs/mongo:/var/log/mongodb
+        user: "${UID_GID}"
+        ports:
+            - "27017:27017"
+        networks:
+            - common
+        restart: always
+    redis:
+        container_name: redis
+        image: redis:alpine
+        command: ["redis-server", "--appendonly", "yes"]
+        volumes:
+            - ./data/redis:/data
+        user: "${UID_GID}"
+        ports:
+            - "6379:6379"
+        networks:
+            - common
+        restart: always
+    mysql:
+        container_name: mysql
+        image: mysql:5.7
+        volumes:
+            - ./data/mysql:/var/lib/mysql
+            - ./logs/mysql:/var/log/mysql
+        user: "${UID_GID}"
+        ports:
+            - "3306:3306"
+        environment:
+            MYSQL_ROOT_PASSWORD: '123456'
+        networks:
+            - common
+        restart: always
+networks:
+    common:
