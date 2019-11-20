@@ -1,6 +1,6 @@
 FROM php:7.2.24-fpm
 
-MAINTAINER Tuan Cao <caotuan92.hus@gmail.com>
+LABEL maintainer="Tuan Cao <caotuan92.hus@gmail.com>"
 
 RUN apt-get update && apt-get install -y \
     libbz2-dev \
