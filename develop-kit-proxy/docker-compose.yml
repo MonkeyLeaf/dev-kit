@@ -7,7 +7,6 @@ services:
         ports:
             - "80:80"
         volumes:
-            - ./includes:/etc/nginx/includes
             - ./config/conf.d:/etc/nginx/conf.d
             - ./config/nginx.conf:/etc/nginx/nginx.conf
             - ./log:/var/log/nginx
