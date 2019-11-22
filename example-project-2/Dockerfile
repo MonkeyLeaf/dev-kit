@@ -54,6 +54,9 @@ COPY config/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
 # Configure supervisord
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
+# Coyping project to image
+COPY ./src /var/www/html
+
 # Expose the port nginx is reachable on
 EXPOSE 80
 
