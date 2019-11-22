@@ -1,37 +1,64 @@
-FROM alpine:3.10
+FROM php:7.3-fpm-alpine
 
 LABEL maintainer="Tuan Cao <caotuan92.hus@gmail.com>" \
       description="Lightweight container with Nginx 1.16 & PHP-FPM 7.3 based on Alpine Linux."
 
 RUN mkdir -p /run/nginx
 
-# Install packages
-RUN apk --no-cache add php7 php7-fpm php7-mysqli php7-json php7-openssl php7-curl \
-    php7-zlib php7-xml php7-phar php7-intl php7-dom php7-xmlreader php7-ctype php7-session \
-    php7-mbstring php7-gd nginx supervisor curl
+RUN apk update && apk add --no-cache \
+  # for install bz2 ext
+  libbz2 \
+  bzip2-dev \
+  # for install gd ext
+  freetype-dev \
+  libjpeg-turbo-dev \
+  libpng-dev \
+  # for install imap ext
+  imap-dev \
+  krb5-dev \
+  openssl-dev \
+  # for install intl ext
+  icu-dev \
+  # for install soap ext
+  libxml2-dev \
+  # for install xsl ext
+  libxslt-dev \
+  # for install zip ext
+  libzip-dev \
+  nginx \
+  supervisor
+
+RUN docker-php-ext-install \
+  bcmath \
+  bz2 \
+  exif \
+  intl \
+  mysqli \
+  pdo_mysql \
+  soap \
+  xmlrpc \
+  xsl \
+  zip \
+  opcache
+
+RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+  && docker-php-ext-install gd
+
+RUN docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
+  && docker-php-ext-install imap
 
 # Configure nginx
 COPY config/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY config/nginx/conf.d/default.conf /etc/nginx/conf.d/default.conf
 
-# Configure PHP-FPM
-COPY config/php/php-fpm.conf /etc/php7/php-fpm.conf
-COPY config/php/php-fpm.d/www.conf /etc/php7/php-fpm.d/www.conf
-
 # Configure supervisord
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Setup document root
-RUN mkdir -p /var/www/html
-
-# Make the document root a volume
-VOLUME /var/www/html
-
-# Add application
-WORKDIR /var/www/html
-
 # Expose the port nginx is reachable on
 EXPOSE 80
+
+RUN apk del openssl-dev
+RUN rm -rf /var/cache/apk/*
 
 # Let supervisord start nginx & php-fpm
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
