@@ -5,6 +5,6 @@
    </head>
    <body>
       <h1>site.example.com</h1>
-      <?php echo phpinfo(); ?>
+   <?php echo phpinfo(); ?>
    </body>
 </html>

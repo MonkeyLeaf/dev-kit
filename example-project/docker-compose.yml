@@ -1,27 +1,17 @@
 version: '3'
 
 services:
-    example-project-nginx:
-        container_name: example-project-nginx
-        image: nginx:alpine
-        links:
-            - example-project-php
-        volumes:
-            - ./config/nginx/default.conf:/etc/nginx/conf.d/default.conf
-            - ./logs/nginx:/var/log/nginx
-            - ./src:/var/www/html
-        networks:
-            - databases_common
-    example-project-php:
-        container_name: example-project-php
-        build: .
-        image: example-project:1.0
-        volumes:
-            - ./config/php/php.ini:/usr/local/etc/php/php.ini
-            - ./logs/php:/var/log/php
-            - ./src:/var/www/html
-        networks:
-            - databases_common
+  example_project:
+    container_name: example_project
+    build: .
+    image: example_project:1.0
+    volumes:
+      - ./config/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+      - ./logs/php:/var/log/php7
+      - ./logs/nginx:/var/log/nginx
+      - ./src:/var/www/html
+    networks:
+      - databases_common
 networks:
-    databases_common:
-        external: true
+  databases_common:
+    external: true
