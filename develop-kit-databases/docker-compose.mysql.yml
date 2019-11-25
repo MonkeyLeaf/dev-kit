@@ -7,7 +7,7 @@ services:
         command: ["redis-server", "--appendonly", "yes"]
         volumes:
             - ./data/redis:/data
-        user: "${UID_GID}"
+#        user: "${UID_GID}"
         ports:
             - "6379:6379"
         networks:
@@ -19,7 +19,7 @@ services:
         volumes:
             - ./data/mysql:/var/lib/mysql
             - ./logs/mysql:/var/log/mysql
-        user: "${UID_GID}"
+#        user: "${UID_GID}"
         ports:
             - "3306:3306"
         environment:
