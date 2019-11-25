@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+    phpmyadmin:
+        container_name: phpmyadmin
+        image: phpmyadmin/phpmyadmin:latest
+        environment:
+            PMA_HOST: mysql
+            MYSQL_ROOT_PASSWORD: '123456'
+        ports:
+            - "8080:80"
+        restart: always
+        networks:
+            - databases_common
+    pgadmin:
+        container_name: pgadmin
+        image: dpage/pgadmin4:latest
+        environment:
+            PGADMIN_DEFAULT_EMAIL: 'caotuan92.hus@gmail.com'
+            PGADMIN_DEFAULT_PASSWORD: '123456'
+        ports:
+            - "5050:80"
+        restart: always
+        networks:
+            - databases_common
+networks:
+    databases_common:
+        external: true

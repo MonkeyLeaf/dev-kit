@@ -3,7 +3,7 @@
 # !!! Please run this file in root project folder
 # This file is a shortcut for `docker-compose up -d`
 # USAGE:
-# $ script/start.sh [environment]
+# $ script/db/start.sh [environment]
 # EG:
 # $ script/db/start.sh
 # $ script/db/start.sh mysql
