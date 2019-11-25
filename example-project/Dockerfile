@@ -57,6 +57,8 @@ COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # Coyping project to image
 COPY ./src /var/www/html
 
+RUN chown -R www-data:www-data /var/www/html
+
 # Expose the port nginx is reachable on
 EXPOSE 80
 
