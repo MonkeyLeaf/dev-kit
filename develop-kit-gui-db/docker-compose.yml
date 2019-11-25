@@ -22,7 +22,7 @@ services:
             - "5050:80"
         restart: always
         networks:
-          - databases_common
+            - databases_common
 networks:
     databases_common:
         external: true
