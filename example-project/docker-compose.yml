@@ -7,8 +7,6 @@ services:
     image: example_project:1.0
     volumes:
       - ./config/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
-      - ./logs/php:/var/log/php7
-      - ./logs/nginx:/var/log/nginx
       - ./src:/var/www/html
     networks:
       - databases_common
