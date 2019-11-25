@@ -12,17 +12,6 @@ services:
         restart: always
         networks:
             - databases_common
-    pgadmin:
-        container_name: pgadmin
-        image: dpage/pgadmin4:latest
-        environment:
-            PGADMIN_DEFAULT_EMAIL: 'caotuan92.hus@gmail.com'
-            PGADMIN_DEFAULT_PASSWORD: '123456'
-        ports:
-            - "5050:80"
-        restart: always
-        networks:
-            - databases_common
 networks:
     databases_common:
         external: true
