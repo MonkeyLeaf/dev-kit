@@ -8,9 +8,13 @@ services:
 #            - ./config/mongo/mongod.conf:/etc/mongod.conf
             - ./data/mongo:/data/db
             - ./logs/mongo:/var/log/mongodb
-#        user: "${UID_GID}"
+        user: "${UID_GID}"
         ports:
             - "27017:27017"
+        command: [--auth]
+        environment:
+            MONGO_INITDB_ROOT_USERNAME: root
+            MONGO_INITDB_ROOT_PASSWORD: 123456
         networks:
             - common
         restart: always
@@ -20,7 +24,7 @@ services:
         command: ["redis-server", "--appendonly", "yes"]
         volumes:
             - ./data/redis:/data
-#        user: "${UID_GID}"
+        user: "${UID_GID}"
         ports:
             - "6379:6379"
         networks:
