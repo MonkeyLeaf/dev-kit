@@ -10,7 +10,7 @@ services:
             - ./data/postgresql/pgdata:/var/lib/postgresql/data
             - /etc/passwd:/etc/passwd:ro
             - ./logs/postgresql:/postgres_log
-#        user: "${UID_GID}"
+        user: "${UID_GID}"
         command: postgres -c config_file=/etc/postgresql.conf
         ports:
             - "5432:5432"
@@ -25,7 +25,7 @@ services:
         command: ["redis-server", "--appendonly", "yes"]
         volumes:
             - ./data/redis:/data
-#        user: "${UID_GID}"
+        user: "${UID_GID}"
         ports:
             - "6379:6379"
         networks:
