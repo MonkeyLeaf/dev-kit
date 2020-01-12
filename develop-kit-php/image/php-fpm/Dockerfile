@@ -1,4 +1,4 @@
-FROM php:7.3-fpm-alpine
+FROM php:fpm-alpine
 
 LABEL maintainer="Tuan Cao <caotuan92.hus@gmail.com>"
 
