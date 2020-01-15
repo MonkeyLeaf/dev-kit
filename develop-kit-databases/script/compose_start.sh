@@ -5,7 +5,7 @@
 # USAGE:
 # $ script/compose_start.sh [environment]
 # EG:
-# $ script/compose_start.sh 
+# $ script/compose_start.sh
 # $ script/compose_start.sh dev
 
 environment=$1
@@ -14,18 +14,15 @@ case "$environment" in
     mongo)
         docker-compose -f docker-compose.mongo.yml up -d
         ;;
-     
+
     mysql)
         docker-compose -f docker-compose.mysql.yml up -d
         ;;
-     
+
     pgsql)
         docker-compose -f docker-compose.pgsql.yml up -d
         ;;
 
-    redis)
-        docker-compose -f docker-compose.redis.yml up -d
-        ;;
     *)
         docker-compose -f docker-compose.yml up -d
 esac
