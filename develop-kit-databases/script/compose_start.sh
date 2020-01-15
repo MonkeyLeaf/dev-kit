@@ -23,6 +23,9 @@ case "$environment" in
         docker-compose -f docker-compose.pgsql.yml up -d
         ;;
 
+    redis)
+        docker-compose -f docker-compose.redis.yml up -d
+        ;;
     *)
         docker-compose -f docker-compose.yml up -d
 esac
