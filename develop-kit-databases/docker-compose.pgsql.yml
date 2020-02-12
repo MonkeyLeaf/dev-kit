@@ -9,7 +9,7 @@ services:
             - ./data/redis:/data
         user: "${UID_GID}"
         ports:
-            - "6379:6379"
+            - "${REDIS_PORTS}"
         networks:
             - common
         restart: always
@@ -25,9 +25,9 @@ services:
         user: "${UID_GID}"
         command: postgres -c config_file=/etc/postgresql.conf
         ports:
-            - "5432:5432"
+            - "${POSTGRES_PORTS}"
         environment:
-            POSTGRES_PASSWORD: '123456'
+            POSTGRES_PASSWORD: '${POSTGRES_PASSWORD}'
         networks:
             - common
         restart: always
