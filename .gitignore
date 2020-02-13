@@ -9,3 +9,4 @@ out
 gen
 develop-kit-php/docker-compose.yml
 develop-kit-php/.env
+develop-kit-gui-db/.env
