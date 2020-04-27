@@ -1,0 +1,47 @@
+version: '3.7'
+
+services:
+  # The Application
+  application:
+    image: ${APPLICATION_IMAGE_NAME}
+    container_name: ${COMPOSE_PROJECT_NAME}_app
+    build:
+      context: .
+      dockerfile: ./config/application/Dockerfile
+      args:
+        - TARGET_PHP_VERSION=${TARGET_PHP_VERSION}
+        - TZ=${TIMEZONE}
+        - ENVIRONMENT=${ENVIRONMENT}
+        # xdebug
+        - WITH_XDEBUG=${WITH_XDEBUG}
+        - REMOTE_PORT=${REMOTE_PORT}
+        - REMOTE_HOST=${REMOTE_HOST}
+        - IDE_KEY=${IDE_KEY}
+        # application
+        - APP_CODE_PATH_CONTAINER=${APP_CODE_PATH_CONTAINER}
+        - APP_CODE_PATH_HOST=${APP_CODE_PATH_HOST}
+    networks:
+      - hoosier-network
+
+  # The Web Server
+  webserver:
+    image: ${WEBSERVER_IMAGE_NAME}
+    container_name: ${COMPOSE_PROJECT_NAME}_webserver
+    build:
+      context: .
+      dockerfile: ./config/webserver/Dockerfile
+      args:
+        - TZ=${TIMEZONE}
+        - APP_CODE_PATH_PUBLIC=${APP_CODE_PATH_PUBLIC}
+        - FILE_CONFIG_NGINX=${FILE_CONFIG_NGINX}
+        - APP_CODE_PATH_CONTAINER=${APP_CODE_PATH_CONTAINER}
+        - APP_CODE_PATH_HOST=${APP_CODE_PATH_HOST}
+    ports:
+      - ${PORT_MAPPING_WEBSERVER}
+    depends_on:
+      - application
+    networks:
+      - hoosier-network
+networks:
+  hoosier-network:
+    driver: ${NETWORKS_DRIVER}

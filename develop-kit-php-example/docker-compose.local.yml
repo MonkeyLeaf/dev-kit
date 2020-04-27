@@ -1,0 +1,47 @@
+version: '3.7'
+
+services:
+  # The Application
+  application:
+    volumes:
+      - ./${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+      - ${APP_CODE_PATH_CONTAINER}/storage
+
+  # The Web Server
+  webserver:
+    volumes:
+      - ./${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+
+  # The Database
+  database:
+    image: mysql
+    container_name: ${COMPOSE_PROJECT_NAME}_database
+    user: "${UID_GID}"
+    volumes:
+      - ./config/database/my.cnf:/etc/mysql/my.cnf
+      - ./data/mysql:/var/lib/mysql
+      - ./logs/mysql:/var/log/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    ports:
+      - ${PORT_MAPPING_MYSQL}
+    networks:
+      - hoosier-network
+
+  # redis
+  cache:
+    image: redis:alpine
+    container_name: ${COMPOSE_PROJECT_NAME}_cache
+    user: "${UID_GID}"
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - ${PORT_MAPPING_REDIS}
+    volumes:
+      - ./data/redis:/data
+    networks:
+      - hoosier-network
+
+networks:
+  hoosier-network:
+    driver: ${NETWORKS_DRIVER}

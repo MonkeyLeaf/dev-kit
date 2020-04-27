@@ -1,0 +1,35 @@
+# Environment variables
+#src/.env
+
+# Logs
+#logs
+#*.log
+#npm-debug.log*
+
+# Documentation
+#docs
+
+# Git file
+#.git
+
+# Docker file
+#*Dockerfile*
+#*docker-compose*
+
+# Deploy folder and file
+#deploy
+#.gitlab-ci.yml
+
+# Documentation file
+src/*.md
+
+# folder of PhpStorm
+.idea
+
+# Composer
+#src/vendor
+src/_ide_helper.php
+
+src/storage/framework/cache/**
+src/storage/framework/sessions/**
+src/storage/framework/views/**
