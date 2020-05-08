@@ -5,6 +5,9 @@ services:
   application:
     image: ${APPLICATION_IMAGE_NAME}
     container_name: ${COMPOSE_PROJECT_NAME}_app
+    volumes:
+      - ./${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
+      - ${APP_CODE_PATH_CONTAINER}/storage
     build:
       context: .
       dockerfile: ./config/application/Dockerfile
@@ -21,12 +24,14 @@ services:
         - APP_CODE_PATH_CONTAINER=${APP_CODE_PATH_CONTAINER}
         - APP_CODE_PATH_HOST=${APP_CODE_PATH_HOST}
     networks:
-      - hoosier-network
+      - php-network
 
   # The Web Server
   webserver:
     image: ${WEBSERVER_IMAGE_NAME}
     container_name: ${COMPOSE_PROJECT_NAME}_webserver
+    volumes:
+      - ./${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
     build:
       context: .
       dockerfile: ./config/webserver/Dockerfile
@@ -41,7 +46,37 @@ services:
     depends_on:
       - application
     networks:
-      - hoosier-network
+      - php-network
+
+  # The Database
+  database:
+    image: mysql
+    container_name: ${COMPOSE_PROJECT_NAME}_database
+    user: "${UID_GID}"
+    volumes:
+      - ./config/database/my.cnf:/etc/mysql/my.cnf
+      - ./data/mysql:/var/lib/mysql
+      - ./logs/mysql:/var/log/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    ports:
+      - ${PORT_MAPPING_MYSQL}
+    networks:
+      - php-network
+
+  # redis
+  cache:
+    image: redis:alpine
+    container_name: ${COMPOSE_PROJECT_NAME}_cache
+    user: "${UID_GID}"
+    command: ["redis-server", "--appendonly", "yes"]
+    ports:
+      - ${PORT_MAPPING_REDIS}
+    volumes:
+      - ./data/redis:/data
+    networks:
+      - php-network
 networks:
-  hoosier-network:
+  php-network:
     driver: ${NETWORKS_DRIVER}

@@ -6,13 +6,4 @@
 # $ script/compose_start.sh [environment]
 # EG:
 # $ script/compose_start.sh
-environment=$1
-
-case "$environment" in
-    local)
-        docker-compose -f docker-compose.yml -f docker-compose.local.yml up -d
-        ;;
-
-    *)
-        docker-compose -f docker-compose.yml up -d
-esac
+docker-compose -f docker-compose.yml up -d

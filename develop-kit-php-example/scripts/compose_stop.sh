@@ -6,13 +6,4 @@
 # $ script/compose_stop.sh [environment]
 # EG:
 # $ script/compose_stop.sh
-environment=$1
-
-case "$environment" in
-    local)
-        docker-compose -f docker-compose.yml -f docker-compose.local.yml down
-        ;;
-
-    *)
-        docker-compose -f docker-compose.yml down
-esac
+docker-compose -f docker-compose.yml down

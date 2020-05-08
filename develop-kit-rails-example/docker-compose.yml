@@ -1,17 +1,23 @@
 version: '3.7'
-
 services:
-  # The Application
-  application:
+  # The App
+  app:
+    build: .
+    image: ${APPLICATION_IMAGE_NAME}:latest
+    container_name: ${COMPOSE_PROJECT_NAME}_app
+    command: sh -c "rm -f tmp/pids/server.pid && bundle exec rails s -p 3000 -b '0.0.0.0'"
+#    user: "${UID_GID}"
     volumes:
-      - ./${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
-      - ${APP_CODE_PATH_CONTAINER}/storage
-
-  # The Web Server
-  webserver:
-    volumes:
-      - ./${APP_CODE_PATH_HOST}:${APP_CODE_PATH_CONTAINER}
-
+      - ./src:/example-app
+    ports:
+      - ${PORT_MAPPING_APP}
+    environment:
+      - DATABASE_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - DATABASE_HOST=${DATABASE_HOST}
+      - DATABASE_USER=${DATABASE_USER}
+      - DATABASE_SOCKET=${DATABASE_SOCKET}
+    networks:
+      - rails-network
   # The Database
   database:
     image: mysql
@@ -23,11 +29,10 @@ services:
       - ./logs/mysql:/var/log/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
     ports:
       - ${PORT_MAPPING_MYSQL}
     networks:
-      - hoosier-network
+      - rails-network
 
   # redis
   cache:
@@ -40,8 +45,8 @@ services:
     volumes:
       - ./data/redis:/data
     networks:
-      - hoosier-network
+      - rails-network
 
 networks:
-  hoosier-network:
+  rails-network:
     driver: ${NETWORKS_DRIVER}
