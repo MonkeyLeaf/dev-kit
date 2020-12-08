@@ -31,9 +31,10 @@ RUN apk update && apk add --no-cache \
 # Install additional packages for php
 RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \
     && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
-    && docker-php-ext-install bcmath bz2 exif intl mysqli pdo_mysql soap xmlrpc xsl zip opcache gd imap
+    && docker-php-ext-install bcmath bz2 exif intl mysqli pdo_mysql soap xsl zip opcache gd imap
 
 RUN pecl install redis && docker-php-ext-enable redis
+RUN pecl install xmlrpc && docker-php-ext-enable xmlrpc
 
 # Install composer and config global token
 #RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
