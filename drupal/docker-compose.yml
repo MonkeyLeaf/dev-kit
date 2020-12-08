@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   database:
-    container_name: alice_database
+    container_name: drupal_database
     image: mysql:8.0.4
     user: 1000:1000
     volumes:
@@ -16,16 +16,16 @@ services:
       - 3306:3306
     restart: unless-stopped
     networks:
-      - alice-network
+      - drupal-network
   application:
-    container_name: alice_application
-    image: alice_application
+    container_name: drupal_application
+    image: drupal_application
     build:
       context: .
       dockerfile: config/drupal/Dockerfile
     ports:
       - 8080:80
-    volumes:
+#    volumes:
 #      - ./web/modules:/opt/drupal/web/modules
 #      - ./web/profiles:/opt/drupal/web/profiles
 #      - ./web/sites:/opt/drupal/web/sites
@@ -34,7 +34,7 @@ services:
     depends_on:
       - database
     networks:
-      - alice-network
+      - drupal-network
 networks:
-  alice-network:
+  drupal-network:
     driver: bridge

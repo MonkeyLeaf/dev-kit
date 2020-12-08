@@ -1,0 +1,40 @@
+version: '3.3'
+services:
+  application:
+    image: wordpress_application
+    container_name: wordpress_application
+    volumes:
+      - ./src:/var/www/html
+    depends_on:
+      - database
+    ports:
+      - 80:80
+    environment:
+      - WORDPRESS_DB_HOST=database
+      - WORDPRESS_DB_USER=root
+      - WORDPRESS_DB_PASSWORD=123456
+      - WORDPRESS_DB_NAME=wordpress
+      - WORDPRESS_TABLE_PREFIX=prx
+      - WORDPRESS_DEBUG=1
+    networks:
+      - wordpress-network
+  database:
+    image: wordpress_database
+    cap_add:
+      - SYS_NICE
+    container_name: wordpress_database
+    user: "1000:1000"
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+      - ./mysql/logs:/var/log/mysql
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=wordpress
+    networks:
+      - wordpress-network
+networks:
+  wordpress-network:
+    driver: bridge

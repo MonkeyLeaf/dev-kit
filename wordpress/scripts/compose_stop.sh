@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# !!! Please run this file in root project folder
+# This file is a shortcut for `docker-compose down`
+# USAGE:
+# $ script/compose_stop.sh
+docker-compose -f docker-compose.yml down
