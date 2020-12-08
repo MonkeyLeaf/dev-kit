@@ -1,0 +1,40 @@
+version: '3.7'
+
+services:
+  database:
+    container_name: alice_database
+    image: mysql:8.0.4
+    user: 1000:1000
+    volumes:
+      - ./config/mysql/config/my.cnf:/etc/mysql/my.cnf
+      - ./config/mysql/data:/var/lib/mysql
+      - ./config/mysql/logs:/var/log/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=1234567890
+      - MYSQL_DATABASE=alice
+    ports:
+      - 3306:3306
+    restart: unless-stopped
+    networks:
+      - alice-network
+  application:
+    container_name: alice_application
+    image: alice_application
+    build:
+      context: .
+      dockerfile: config/drupal/Dockerfile
+    ports:
+      - 8080:80
+    volumes:
+#      - ./web/modules:/opt/drupal/web/modules
+#      - ./web/profiles:/opt/drupal/web/profiles
+#      - ./web/sites:/opt/drupal/web/sites
+#      - ./web/themes:/opt/drupal/web/themes
+    restart: unless-stopped
+    depends_on:
+      - database
+    networks:
+      - alice-network
+networks:
+  alice-network:
+    driver: bridge
