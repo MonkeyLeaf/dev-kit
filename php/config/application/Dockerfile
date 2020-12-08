@@ -1,5 +1,4 @@
-ARG TARGET_PHP_VERSION=7.3
-FROM php:$TARGET_PHP_VERSION-fpm-alpine
+FROM php:fpm-alpine
 
 ARG APP_CODE_PATH_CONTAINER="/var/www"
 ARG APP_CODE_PATH_HOST="src"
@@ -30,7 +29,7 @@ RUN apk update && apk add --no-cache \
   gcc musl-dev libc-dev g++ autoconf make
 
 # Install additional packages for php
-RUN docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \
     && docker-php-ext-configure imap --with-kerberos --with-imap-ssl \
     && docker-php-ext-install bcmath bz2 exif intl mysqli pdo_mysql soap xmlrpc xsl zip opcache gd imap
 
