@@ -12,7 +12,6 @@ services:
       context: .
       dockerfile: ./config/application/Dockerfile
       args:
-        - TARGET_PHP_VERSION=${TARGET_PHP_VERSION}
         - TZ=${TIMEZONE}
         - ENVIRONMENT=${ENVIRONMENT}
         # xdebug
