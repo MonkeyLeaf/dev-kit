@@ -1,14 +1,32 @@
-version: '3.3'
+version: '3.7'
+
 services:
-  application:
-    image: wordpress_application
-    container_name: wordpress_application
+  database:
+    container_name: wordpress_database
+    image: mysql
+    user: 1000:1000
     volumes:
-      - ./src:/var/www/html
-    depends_on:
-      - database
+      - ./mysql/config/my.cnf:/etc/mysql/my.cnf
+      - ./mysql/data:/var/lib/mysql
+      - ./mysql/logs:/var/log/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=123456
+      - MYSQL_DATABASE=wordpress
+    ports:
+      - 3306:3306
+    restart: unless-stopped
+    networks:
+      - wordpress-network
+  application:
+    container_name: wordpress_application
+    image: wordpress
     ports:
       - 80:80
+#    volumes:
+#      - ./src:/var/www/html
+    restart: unless-stopped
+    depends_on:
+      - database
     environment:
       - WORDPRESS_DB_HOST=database
       - WORDPRESS_DB_USER=root
@@ -16,23 +34,6 @@ services:
       - WORDPRESS_DB_NAME=wordpress
       - WORDPRESS_TABLE_PREFIX=prx
       - WORDPRESS_DEBUG=1
-    networks:
-      - wordpress-network
-  database:
-    image: wordpress_database
-    cap_add:
-      - SYS_NICE
-    container_name: wordpress_database
-    user: "1000:1000"
-    command: --default-authentication-plugin=mysql_native_password
-    volumes:
-      - ./mysql/data:/var/lib/mysql
-      - ./mysql/logs:/var/log/mysql
-    ports:
-      - 3306:3306
-    environment:
-      - MYSQL_ROOT_PASSWORD=123456
-      - MYSQL_DATABASE=wordpress
     networks:
       - wordpress-network
 networks:

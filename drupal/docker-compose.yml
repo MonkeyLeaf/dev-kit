@@ -3,7 +3,7 @@ version: '3.7'
 services:
   database:
     container_name: drupal_database
-    image: mysql:8.0.4
+    image: mysql
     user: 1000:1000
     volumes:
       - ./config/mysql/config/my.cnf:/etc/mysql/my.cnf
