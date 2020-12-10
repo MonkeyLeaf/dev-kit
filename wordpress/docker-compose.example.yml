@@ -6,9 +6,9 @@ services:
     image: mysql
     user: 1000:1000
     volumes:
-      - ./mysql/config/my.cnf:/etc/mysql/my.cnf
-      - ./mysql/data:/var/lib/mysql
-      - ./mysql/logs:/var/log/mysql
+      - ./config/mysql/config/my.cnf:/etc/mysql/my.cnf
+      - ./config/mysql/data:/var/lib/mysql
+      - ./config/mysql/logs:/var/log/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=123456
       - MYSQL_DATABASE=wordpress
@@ -19,11 +19,14 @@ services:
       - wordpress-network
   application:
     container_name: wordpress_application
-    image: wordpress
+    image: wordpress_application
+    build:
+      context: .
+      dockerfile: config/wordpress/Dockerfile
     ports:
       - 80:80
 #    volumes:
-#      - ./src:/var/www/html
+#      - ./html:/var/www/html
     restart: unless-stopped
     depends_on:
       - database

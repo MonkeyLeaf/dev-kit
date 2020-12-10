@@ -1,4 +1,4 @@
-# Step by step setup drupal on localhost by docker
+# Step-by-step setup drupal on localhost by docker
 
 - Copy ```docker-compose.example.yml``` to ```docker-compose.yml``` file with below content:
 - Running below code to install Drupal
@@ -6,7 +6,7 @@
   $  ./drupal/scripts/compose_build.sh
   $  ./drupal/scripts/compose_start.sh
   ```
-- Process to ```localhost:8080``` to install Drupal
+- Process to ```localhost``` to see Drupal
 - Copy folder /opt/drupal/web from container to host
 ```shell
 $ docker cp <container_id>:/opt/drupal/web .
