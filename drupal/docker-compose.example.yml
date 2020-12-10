@@ -11,7 +11,7 @@ services:
       - ./config/mysql/logs:/var/log/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=1234567890
-      - MYSQL_DATABASE=alice
+      - MYSQL_DATABASE=drupal_example
     ports:
       - 3306:3306
     restart: unless-stopped

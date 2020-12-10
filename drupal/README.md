@@ -46,13 +46,13 @@
   $  ./drupal/scripts/compose_start.sh
   ```
 - Process to ```localhost:8080``` to install Drupal
+- Copy folder /opt/drupal/web from container to host
+```shell
+$ docker cp <container_id>:/opt/drupal/web .
+```
 - After install successfully, stop container by command
   ```shell
-  $ docker-compose down
-  ```
-- Copy folder /opt/drupal/web from container to host
-  ```shell
-  $ docker cp <container_id>:/opt/drupal/web .
+  $ ./drupal/scripts/compose_stop.sh
   ```
 - Edit ```docker-compose.yml``` by uncomment below code
     ```yaml
