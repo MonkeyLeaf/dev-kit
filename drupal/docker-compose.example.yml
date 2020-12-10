@@ -24,12 +24,9 @@ services:
       context: .
       dockerfile: config/drupal/Dockerfile
     ports:
-      - 8080:80
+      - 80:80
 #    volumes:
-#      - ./web/modules:/opt/drupal/web/modules
-#      - ./web/profiles:/opt/drupal/web/profiles
-#      - ./web/sites:/opt/drupal/web/sites
-#      - ./web/themes:/opt/drupal/web/themes
+#      - ./web:/opt/drupal/web
     restart: unless-stopped
     depends_on:
       - database
