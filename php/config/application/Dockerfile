@@ -10,7 +10,11 @@ ARG IDE_KEY="PHPSTORM"
 
 WORKDIR $APP_CODE_PATH_CONTAINER
 
+RUN echo http://dl-2.alpinelinux.org/alpine/edge/community/ >> /etc/apk/repositories
+RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
+
 RUN apk update && apk add --no-cache \
+  shadow \
   # for install bz2 ext
   libbz2 bzip2-dev \
   # for install gd ext
