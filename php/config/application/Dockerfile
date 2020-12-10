@@ -11,7 +11,6 @@ ARG IDE_KEY="PHPSTORM"
 WORKDIR $APP_CODE_PATH_CONTAINER
 
 RUN echo http://dl-2.alpinelinux.org/alpine/edge/community/ >> /etc/apk/repositories
-RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
 
 RUN apk update && apk add --no-cache \
   shadow \
@@ -31,6 +30,8 @@ RUN apk update && apk add --no-cache \
   libzip-dev \
   # Install Redis extension library
   gcc musl-dev libc-dev g++ autoconf make
+
+RUN usermod -u 1000 www-data && groupmod -g 1000 www-data
 
 # Install additional packages for php
 RUN docker-php-ext-configure gd --with-freetype=/usr/include/ --with-jpeg=/usr/include/ \
