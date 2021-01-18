@@ -6,7 +6,6 @@ services:
     image: mysql
     user: 1000:1000
     volumes:
-      - ./config/mysql/config/my.cnf:/etc/mysql/my.cnf
       - ./config/mysql/data:/var/lib/mysql
       - ./config/mysql/logs:/var/log/mysql
     environment:
